@@ -23,6 +23,12 @@ public interface OrderAPIRetrofit {
     @POST("api/v1/orders")
     Call<KucoinFuturesResponse<OrderCreateResponse>> createOrder(@Body OrderCreateApiRequest opsRequest);
 
+    @POST("api/v1/orders/multi")
+    Call<KucoinFuturesResponse<List<OrderCreateMultiResponse>>> createOrderMulti(@Body List<OrderCreateApiRequest> requests);
+
+    @POST("api/v1/orders/test")
+    Call<KucoinFuturesResponse<OrderCreateResponse>> createOrderTest(@Body OrderCreateApiRequest opsRequest);
+
     @DELETE("api/v1/orders/{orderId}")
     Call<KucoinFuturesResponse<OrderCancelResponse>> cancelOrder(@Path("orderId") String orderId);
 
@@ -62,5 +68,8 @@ public interface OrderAPIRetrofit {
 
     @GET("api/v1/recentDoneOrders")
     Call<KucoinFuturesResponse<List<OrderResponse>>> queryRecentDoneOrders();
+
+    @GET("api/v1/trade-fees")
+    Call<KucoinFuturesResponse<TradeFeeResponse>> getTradeFee(@Query("symbol") String symbol);
 
 }
