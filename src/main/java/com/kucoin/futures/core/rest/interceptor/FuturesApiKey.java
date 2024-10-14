@@ -3,6 +3,8 @@ package com.kucoin.futures.core.rest.interceptor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Objects;
+
 /**
  * Created by Luka on 2021/3/16.
  */
@@ -17,4 +19,9 @@ public class FuturesApiKey {
     private String passPhrase;
 
     private String keyVersion;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key, secret, passPhrase, keyVersion);
+    }
 }

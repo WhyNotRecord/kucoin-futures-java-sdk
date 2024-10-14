@@ -17,18 +17,19 @@ public class AuthRetrofitAPIImpl<T> extends AbstractRetrofitAPIImpl<T> {
 
     @Override
     public T getAPIImpl() {
-        if (inited)
-            return apiImpl;
+        //todo caching
+        /*if (inited)
+            return apiImpl;*/
         synchronized (getClass()) {
-            if (inited)
-              return apiImpl;
+            /*if (inited)
+              return apiImpl;*/
             @SuppressWarnings("unchecked")
             Class<T> tClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass())
                     .getActualTypeArguments()[0];
             T t = RetrofitFactory.getAuthRetrofit(baseUrl, apiKey)
                     .create(tClass);
-            apiImpl = t;
-            inited = true;
+            /*apiImpl = t;
+            inited = true;*/
             return t;
         }
     }
