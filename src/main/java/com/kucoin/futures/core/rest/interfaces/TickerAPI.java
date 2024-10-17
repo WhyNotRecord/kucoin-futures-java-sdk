@@ -6,6 +6,7 @@ package com.kucoin.futures.core.rest.interfaces;
 import com.kucoin.futures.core.rest.response.TickerResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author chenshiwei
@@ -24,5 +25,13 @@ public interface TickerAPI {
      * @throws IOException
      */
     TickerResponse getTicker(String symbol) throws IOException;
+
+
+    /**
+     * Get Latest Ticker for All Contracts
+     * @return
+     * @throws IOException
+     */
+    List<TickerResponse> getAllTickers() throws IOException;
 
 }

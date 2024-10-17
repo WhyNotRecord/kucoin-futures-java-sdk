@@ -28,6 +28,12 @@ public interface PositionAPIRetrofit {
     @GET("api/v1/positions")
     Call<KucoinFuturesResponse<List<PositionResponse>>> getPositions();
 
+    @GET("api/v2/getMaxOpenSize")
+    Call<KucoinFuturesResponse<MaxOpenSizeResponse>> getMaxOpenSize(@Query("symbol") String symbol,
+                                                                    @Query("price") BigDecimal price,
+                                                                    @Query("leverage") BigDecimal leverage);
+
+
     @GET("api/v1/history-positions")
     Call<KucoinFuturesResponse<Pagination<HistoryPositionResponse>>> getHistoryPositions(@Query("symbol") String symbol,
                                                                                          @Query("from") Long from,

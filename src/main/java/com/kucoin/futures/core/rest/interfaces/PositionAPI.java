@@ -5,9 +5,7 @@ package com.kucoin.futures.core.rest.interfaces;
 
 import com.kucoin.futures.core.rest.request.HistoryPositionsRequest;
 import com.kucoin.futures.core.rest.request.WithdrawMarginRequest;
-import com.kucoin.futures.core.rest.response.HistoryPositionResponse;
-import com.kucoin.futures.core.rest.response.Pagination;
-import com.kucoin.futures.core.rest.response.PositionResponse;
+import com.kucoin.futures.core.rest.response.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -36,6 +34,14 @@ public interface PositionAPI {
      * @throws IOException
      */
     List<PositionResponse> getPositions() throws IOException;
+
+
+    /**
+     * Get Maximum Open Position Size
+     * @return
+     * @throws IOException
+     */
+    MaxOpenSizeResponse getMaxOpenSize(MaxOpenSizeRequest request) throws IOException;
 
     /**
      * This interface can query position history information records

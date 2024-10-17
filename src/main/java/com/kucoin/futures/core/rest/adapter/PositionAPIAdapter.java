@@ -3,17 +3,15 @@
  */
 package com.kucoin.futures.core.rest.adapter;
 
+import com.kucoin.futures.core.rest.impl.retrofit.AuthRetrofitAPIImpl;
 import com.kucoin.futures.core.rest.interceptor.FuturesApiKey;
 import com.kucoin.futures.core.rest.interfaces.PositionAPI;
+import com.kucoin.futures.core.rest.interfaces.retrofit.PositionAPIRetrofit;
 import com.kucoin.futures.core.rest.request.AddMarginManuallyRequest;
 import com.kucoin.futures.core.rest.request.HistoryPositionsRequest;
 import com.kucoin.futures.core.rest.request.UpdateAutoDepositMarginRequest;
-import com.kucoin.futures.core.rest.impl.retrofit.AuthRetrofitAPIImpl;
-import com.kucoin.futures.core.rest.interfaces.retrofit.PositionAPIRetrofit;
 import com.kucoin.futures.core.rest.request.WithdrawMarginRequest;
-import com.kucoin.futures.core.rest.response.HistoryPositionResponse;
-import com.kucoin.futures.core.rest.response.Pagination;
-import com.kucoin.futures.core.rest.response.PositionResponse;
+import com.kucoin.futures.core.rest.response.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -38,6 +36,11 @@ public class PositionAPIAdapter extends AuthRetrofitAPIImpl<PositionAPIRetrofit>
     @Override
     public List<PositionResponse> getPositions() throws IOException {
         return super.executeSync(getAPIImpl().getPositions());
+    }
+
+    @Override
+    public MaxOpenSizeResponse getMaxOpenSize(MaxOpenSizeRequest request) throws IOException {
+        return super.executeSync(getAPIImpl().getMaxOpenSize(request.getSymbol(), request.getPrice(), request.getLeverage()));
     }
 
     @Override

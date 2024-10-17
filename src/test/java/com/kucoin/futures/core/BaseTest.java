@@ -43,7 +43,7 @@ public class BaseTest {
     @BeforeClass
     public static void setUpClass() throws IOException {
         KucoinFuturesClientBuilder builder = new KucoinFuturesClientBuilder().withBaseUrl("https://api-futures.kucoin.com")
-                .withApiKey("", "", "", APIConstants.DEFAULT_API_KEY_VERSION);
+                .withApiKey(System.getenv("API_KEY"), System.getenv("API_SECRET"), System.getenv("API_PASSPHRASE"), APIConstants.DEFAULT_API_KEY_VERSION);
 
         futuresRestClient = builder.buildRestClient();
         kucoinFuturesPrivateWSClient = builder.buildPrivateWSClient();

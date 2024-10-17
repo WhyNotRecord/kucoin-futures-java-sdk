@@ -176,14 +176,17 @@ public class KucoinFuturesRestClientTest extends BaseTest {
         List<FillResponse> fillResponses = futuresRestClient.fillAPI().recentFills();
         assertThat(fillResponses, notNullValue());
 
-        ActiveOrderResponse xbtusdm = futuresRestClient.fillAPI().calActiveOrderValue(SYMBOL);
-        assertThat(xbtusdm, notNullValue());
+        ActiveOrderResponse xbtusdtm = futuresRestClient.fillAPI().calActiveOrderValue(SYMBOL);
+        assertThat(xbtusdtm, notNullValue());
     }
 
     @Test
     public void positionAPI() throws Exception {
         PositionResponse position = futuresRestClient.positionAPI().getPosition(SYMBOL);
         assertThat(position, notNullValue());
+        MaxOpenSizeResponse maxOpenSize = futuresRestClient.positionAPI().getMaxOpenSize(MaxOpenSizeRequest.builder().
+                symbol("PEPEUSDTM").price(BigDecimal.valueOf(0.0000000001)).leverage(BigDecimal.valueOf(10)).build());
+        assertThat(maxOpenSize, notNullValue());
 
         List<PositionResponse> positions = futuresRestClient.positionAPI().getPositions();
         assertThat(positions, notNullValue());
@@ -228,6 +231,12 @@ public class KucoinFuturesRestClientTest extends BaseTest {
     public void tickerAPI() throws Exception {
         TickerResponse ticker = futuresRestClient.tickerAPI().getTicker(SYMBOL);
         assertThat(ticker, notNullValue());
+
+        List<TickerResponse> tickers = futuresRestClient.tickerAPI().getAllTickers();
+        tickers.forEach(t -> {
+            assertThat(t, notNullValue());
+        });
+        assertThat(tickers.size(), greaterThan(0));
     }
 
     @Test
@@ -290,6 +299,23 @@ public class KucoinFuturesRestClientTest extends BaseTest {
                 .price(BigDecimal.valueOf(5)).size(BigDecimal.ONE).side("buy").leverage("5")
                 .symbol(SYMBOL).type("limit").clientOid(UUID.randomUUID().toString()).build();
         OrderCreateResponse orderTest = futuresRestClient.orderAPI().createOrderTest(pageRequest);
+        assertThat(orderTest, notNullValue());
+    }
+
+    @Test
+    public void stOrderTest() throws IOException {
+        StOrderCreateRequest request = StOrderCreateRequest.builder().
+                clientOid(UUID.randomUUID().toString()).
+                side("buy").symbol("XBTUSDTM").
+                leverage(BigDecimal.valueOf(2)).
+                type("limit").
+                price(BigDecimal.valueOf(800)).
+                size(1).stopPriceType("TP").marginMode("CROSS").
+                triggerStopUpPrice(BigDecimal.valueOf(9000)).
+                triggerStopDownPrice(BigDecimal.valueOf(100)).
+                timeInForce("GTC").
+                build();
+        StOrderCreateResponse orderTest = futuresRestClient.orderAPI().createStOrders(request);
         assertThat(orderTest, notNullValue());
     }
 

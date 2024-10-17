@@ -5,6 +5,7 @@ package com.kucoin.futures.core.rest.interfaces;
 
 import com.kucoin.futures.core.rest.request.DuringPageRequest;
 import com.kucoin.futures.core.rest.request.OrderCreateApiRequest;
+import com.kucoin.futures.core.rest.request.StOrderCreateRequest;
 import com.kucoin.futures.core.rest.response.*;
 
 import java.io.IOException;
@@ -52,6 +53,18 @@ public interface OrderAPI {
      * @throws IOException
      */
     OrderCreateResponse createOrderTest(OrderCreateApiRequest opsRequest) throws IOException;
+
+
+    /**
+     * This interface supports both take-profit and stop-loss functions, and other functions are exactly the same as the place order interface.
+     * You can place two types of orders: limit and market. Orders can only be placed if your account has sufficient funds. Once an order is placed,
+     *  your funds will be put on hold for the duration of the order. The amount of funds on hold depends on the order type and parameters specified.
+     * Please be noted that the system would hold the fees from the orders entered the orderbook in advance. Read Get Fills to learn more.
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    StOrderCreateResponse createStOrders(StOrderCreateRequest request) throws IOException;
 
     /**
      * Cancel an order

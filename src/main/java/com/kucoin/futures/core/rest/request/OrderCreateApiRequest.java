@@ -29,7 +29,7 @@ public class OrderCreateApiRequest {
     private String side;
 
     /**
-     * a valid trading symbol code. e.g. XBTUSDM
+     * a valid trading symbol code. e.g. XBTUSDTM
      */
     private String symbol;
 
