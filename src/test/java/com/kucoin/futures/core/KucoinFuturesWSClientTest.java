@@ -7,6 +7,8 @@ package com.kucoin.futures.core;
 import com.kucoin.futures.core.enums.KLineTypeEnum;
 import com.kucoin.futures.core.model.enums.PrivateChannelEnum;
 import com.kucoin.futures.core.model.enums.PublicChannelEnum;
+import com.kucoin.futures.core.rest.request.ChangeCrossUserLeverageRequest;
+import com.kucoin.futures.core.rest.request.ChangeMarginRequest;
 import com.kucoin.futures.core.rest.request.OrderCreateApiRequest;
 import com.kucoin.futures.core.rest.response.MarkPriceResponse;
 import com.kucoin.futures.core.rest.response.OrderCreateResponse;
@@ -24,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -112,6 +114,50 @@ public class KucoinFuturesWSClientTest extends BaseTest {
 
         assertTrue(gotEvent.await(20000, TimeUnit.SECONDS));
         assertThat(event.get(), notNullValue());
+    }
+
+    @Test
+    public void onMarginModeAndCrossLeverageChange() throws Exception {
+        CountDownLatch gotEvent = new CountDownLatch(2);
+
+        kucoinFuturesPrivateWSClient.onMarginModeChange(response -> {
+
+            try {
+                response.getData().forEach((k, v) -> {
+                    assertThat(k, equalTo(SYMBOL));
+                    assertThat(v, equalTo("CROSS"));
+                });
+                kucoinFuturesPrivateWSClient.unsubscribe(PrivateChannelEnum.MARGIN_MODE_CHANGE);
+            } catch (Exception e) {
+                assertThat(e, nullValue());
+            } finally {
+                gotEvent.countDown();
+            }
+
+        });
+
+        String subId = kucoinFuturesPrivateWSClient.onCrossLeverageChange(response -> {
+            try {
+                response.getData().forEach((k, v) -> {
+                    assertThat(k, equalTo(SYMBOL));
+                    assertThat(v.getLeverage(), equalTo("10"));
+                });
+                kucoinFuturesPrivateWSClient.unsubscribe(PrivateChannelEnum.CROSS_LEVERAGE_CHANGE);
+            } catch (Exception e) {
+                assertThat(e, nullValue());
+            } finally {
+                gotEvent.countDown();
+            }
+        });
+
+
+        Thread.sleep(1000);
+        futuresRestClient.positionAPI().changeMarginMode(ChangeMarginRequest.builder().marginMode("CROSS").symbol(SYMBOL).build());
+        Thread.sleep(1000);
+        futuresRestClient.positionAPI().changeCrossUserLeverage(ChangeCrossUserLeverageRequest.builder().
+                symbol(SYMBOL).leverage("10").build());
+        Thread.sleep(1000);
+        assertTrue(gotEvent.await(20000, TimeUnit.SECONDS));
     }
 
     @Test
@@ -318,6 +364,7 @@ public class KucoinFuturesWSClientTest extends BaseTest {
                 .size(BigDecimal.ONE)
                 .side("buy")
                 .symbol(SYMBOL)
+                .marginMode("CROSS")
                 .type("market")
                 .leverage("5")
                 .clientOid(UUID.randomUUID().toString())
@@ -326,6 +373,7 @@ public class KucoinFuturesWSClientTest extends BaseTest {
         OrderCreateApiRequest request2 = OrderCreateApiRequest.builder()
                 .size(BigDecimal.ONE)
                 .side("sell")
+                .marginMode("CROSS")
                 .symbol(SYMBOL)
                 .type("market")
                 .leverage("5")

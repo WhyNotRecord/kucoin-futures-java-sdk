@@ -131,6 +131,9 @@ public class KucoinFuturesRestClientTest extends BaseTest {
         OrderResponse orderDetail = futuresRestClient.orderAPI().getOrderDetail(order.getOrderId());
         assertThat(orderDetail, notNullValue());
 
+        OrderResponse orderDetail2 = futuresRestClient.orderAPI().getOrderDetailByClientOid(order.getClientOid());
+        assertThat(orderDetail2, notNullValue());
+
         OrderCancelResponse orderCancelResponse = futuresRestClient.orderAPI().cancelOrder(order.getOrderId());
         assertThat(orderCancelResponse.getCancelledOrderIds().size(), is(1));
 
@@ -176,14 +179,17 @@ public class KucoinFuturesRestClientTest extends BaseTest {
         List<FillResponse> fillResponses = futuresRestClient.fillAPI().recentFills();
         assertThat(fillResponses, notNullValue());
 
-        ActiveOrderResponse xbtusdm = futuresRestClient.fillAPI().calActiveOrderValue(SYMBOL);
-        assertThat(xbtusdm, notNullValue());
+        ActiveOrderResponse xbtusdtm = futuresRestClient.fillAPI().calActiveOrderValue(SYMBOL);
+        assertThat(xbtusdtm, notNullValue());
     }
 
     @Test
     public void positionAPI() throws Exception {
         PositionResponse position = futuresRestClient.positionAPI().getPosition(SYMBOL);
         assertThat(position, notNullValue());
+        MaxOpenSizeResponse maxOpenSize = futuresRestClient.positionAPI().getMaxOpenSize(MaxOpenSizeRequest.builder().
+                symbol("PEPEUSDTM").price(BigDecimal.valueOf(0.0000000001)).leverage(BigDecimal.valueOf(10)).build());
+        assertThat(maxOpenSize, notNullValue());
 
         List<PositionResponse> positions = futuresRestClient.positionAPI().getPositions();
         assertThat(positions, notNullValue());
@@ -201,6 +207,24 @@ public class KucoinFuturesRestClientTest extends BaseTest {
 
         Pagination<HistoryPositionResponse> historyPositions = futuresRestClient.positionAPI().getHistoryPositions(HistoryPositionsRequest.builder().symbol("BOMEUSDTM").from(startAt).to(endAt).limit(10).pageId(1).build());
         assertThat(historyPositions, notNullValue());
+
+    }
+
+    @Test
+    public void positionAPI1() throws Exception {
+        MarginModeResponse marginMode = futuresRestClient.positionAPI().getMarginMode(SYMBOL);
+        assertThat(marginMode, notNullValue());
+
+        marginMode = futuresRestClient.positionAPI().changeMarginMode(ChangeMarginRequest.builder().marginMode("CROSS").symbol(SYMBOL).build());
+        assertThat(marginMode, notNullValue());
+
+
+        boolean success = futuresRestClient.positionAPI().changeCrossUserLeverage(ChangeCrossUserLeverageRequest.builder().symbol(SYMBOL).leverage("10").build());
+        assertThat(success, is(true));
+
+        GetCrossUserLeverageResponse response = futuresRestClient.positionAPI().getCrossUserLeverage(SYMBOL);
+        assertThat(response, notNullValue());
+
 
     }
 
@@ -228,6 +252,12 @@ public class KucoinFuturesRestClientTest extends BaseTest {
     public void tickerAPI() throws Exception {
         TickerResponse ticker = futuresRestClient.tickerAPI().getTicker(SYMBOL);
         assertThat(ticker, notNullValue());
+
+        List<TickerResponse> tickers = futuresRestClient.tickerAPI().getAllTickers();
+        tickers.forEach(t -> {
+            assertThat(t, notNullValue());
+        });
+        assertThat(tickers.size(), greaterThan(0));
     }
 
     @Test
@@ -294,6 +324,23 @@ public class KucoinFuturesRestClientTest extends BaseTest {
     }
 
     @Test
+    public void stOrderTest() throws IOException {
+        StOrderCreateRequest request = StOrderCreateRequest.builder().
+                clientOid(UUID.randomUUID().toString()).
+                side("buy").symbol("XBTUSDTM").
+                leverage(BigDecimal.valueOf(2)).
+                type("limit").
+                price(BigDecimal.valueOf(800)).
+                size(1).stopPriceType("TP").marginMode("CROSS").
+                triggerStopUpPrice(BigDecimal.valueOf(9000)).
+                triggerStopDownPrice(BigDecimal.valueOf(100)).
+                timeInForce("GTC").
+                build();
+        StOrderCreateResponse orderTest = futuresRestClient.orderAPI().createStOrders(request);
+        assertThat(orderTest, notNullValue());
+    }
+
+    @Test
     public void placeOrderMultiTest() throws IOException {
         OrderCreateApiRequest pageRequest = OrderCreateApiRequest.builder()
                 .price(BigDecimal.valueOf(5)).size(BigDecimal.ONE).side("buy").leverage("5")
@@ -305,6 +352,7 @@ public class KucoinFuturesRestClientTest extends BaseTest {
     private OrderCreateResponse placeCannotDealLimitOrder() throws IOException {
         OrderCreateApiRequest pageRequest = OrderCreateApiRequest.builder()
                 .price(BigDecimal.valueOf(5)).size(BigDecimal.ONE).side("buy").leverage("5")
+                .marginMode("CROSS")
                 .symbol(SYMBOL).type("limit").clientOid(UUID.randomUUID().toString()).build();
         return futuresRestClient.orderAPI().createOrder(pageRequest);
     }

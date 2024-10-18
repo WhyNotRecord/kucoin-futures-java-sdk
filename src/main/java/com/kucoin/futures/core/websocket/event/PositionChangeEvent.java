@@ -97,4 +97,12 @@ public class PositionChangeEvent {
     /** Adjustment Result of Risk Limit Level **/
     private Integer riskLimitLevel;
 
+    private String marginMode;
+
+    private String positionSide;
+
+    private String leverage;
+
+    private String posFunding;
+
 }

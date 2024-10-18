@@ -42,5 +42,7 @@ public class APIConstants {
     public static final String API_POSITION_TOPIC_PREFIX = "/contract/position:";
 
     public static final String API_POSITION_ALL_TOPIC_PREFIX = "/contract/positionAll";
+    public static final String API_CONTRACT_MARGIN_MODE_PREFIX = "/contract/marginMode";
+    public static final String API_CONTRACT_CROSS_LEVERAGE_PREFIX = "/contract/crossLeverage";
     public static final String API_K_LINE_TOPIC_PREFIX = "/contractMarket/limitCandle:";
 }

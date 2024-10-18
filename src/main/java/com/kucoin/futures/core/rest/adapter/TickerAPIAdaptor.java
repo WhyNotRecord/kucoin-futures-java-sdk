@@ -9,6 +9,7 @@ import com.kucoin.futures.core.rest.impl.retrofit.PublicRetrofitAPIImpl;
 import com.kucoin.futures.core.rest.response.TickerResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author chenshiwei
@@ -23,5 +24,10 @@ public class TickerAPIAdaptor extends PublicRetrofitAPIImpl<TickerAPIRetrofit> i
     @Override
     public TickerResponse getTicker(String symbol) throws IOException {
         return super.executeSync(getAPIImpl().getTicker(symbol));
+    }
+
+    @Override
+    public List<TickerResponse> getAllTickers() throws IOException {
+        return super.executeSync(getAPIImpl().getAllTickers());
     }
 }
