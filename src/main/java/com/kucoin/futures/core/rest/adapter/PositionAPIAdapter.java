@@ -7,10 +7,7 @@ import com.kucoin.futures.core.rest.impl.retrofit.AuthRetrofitAPIImpl;
 import com.kucoin.futures.core.rest.interceptor.FuturesApiKey;
 import com.kucoin.futures.core.rest.interfaces.PositionAPI;
 import com.kucoin.futures.core.rest.interfaces.retrofit.PositionAPIRetrofit;
-import com.kucoin.futures.core.rest.request.AddMarginManuallyRequest;
-import com.kucoin.futures.core.rest.request.HistoryPositionsRequest;
-import com.kucoin.futures.core.rest.request.UpdateAutoDepositMarginRequest;
-import com.kucoin.futures.core.rest.request.WithdrawMarginRequest;
+import com.kucoin.futures.core.rest.request.*;
 import com.kucoin.futures.core.rest.response.*;
 
 import java.io.IOException;
@@ -51,6 +48,26 @@ public class PositionAPIAdapter extends AuthRetrofitAPIImpl<PositionAPIRetrofit>
                 request.getLimit(),
                 request.getPageId())
         );
+    }
+
+    @Override
+    public MarginModeResponse getMarginMode(String symbol) throws IOException {
+        return super.executeSync(getAPIImpl().getMarginMode(symbol));
+    }
+
+    @Override
+    public MarginModeResponse changeMarginMode(ChangeMarginRequest request) throws IOException {
+        return super.executeSync(getAPIImpl().changeMarginMode(request));
+    }
+
+    @Override
+    public GetCrossUserLeverageResponse getCrossUserLeverage(String symbol) throws IOException {
+        return super.executeSync(getAPIImpl().getCrossUserLeverage(symbol));
+    }
+
+    @Override
+    public boolean changeCrossUserLeverage(ChangeCrossUserLeverageRequest req) throws IOException {
+        return super.executeSync(getAPIImpl().changeCrossUserLeverage(req));
     }
 
     @Override

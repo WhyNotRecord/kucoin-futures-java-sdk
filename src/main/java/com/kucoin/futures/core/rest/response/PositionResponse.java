@@ -89,4 +89,11 @@ public class PositionResponse {
 
     private String settleCurrency;
 
+    private String marginMode;
+
+    private String positionSide;
+
+    private String leverage;
+
+    private String posFunding;
 }

@@ -15,14 +15,19 @@ import java.math.BigDecimal;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AccountChangeEvent {
 
-    private BigDecimal orderMargin;
-
-    private BigDecimal availableBalance;
-
-    private BigDecimal withdrawHold;
-
-    private String currency;
-
-    private long timestamp;
-
+    private String currency; // Currency Symbol
+    private String walletBalance; // Wallet Balance
+    private String availableBalance; // Available Balance
+    private String holdBalance; // Frozen Balance
+    private String isolatedOrderMargin; // Margin of the isolated margin order
+    private String isolatedPosMargin; // Margin of the isolated margin position
+    private String isolatedUnPnl; // Unrealized P&L in isolated margin mode
+    private String isolatedFundingFeeMargin; // Isolated margin funding fee
+    private String crossOrderMargin; // Margin of the cross margin order
+    private String crossPosMargin; // Margin of the cross margin position
+    private String crossUnPnl; // Unrealized P&L in cross margin mode
+    private String equity; // Equity
+    private String totalCrossMargin; // Total margin under cross margin mode
+    private String version; // Version
+    private String timestamp; // Last modified time
 }

@@ -38,17 +38,22 @@ public class KucoinFuturesWebsocketListener extends WebSocketListener {
     private Map<String, TypeReference> typeReferenceMap = new HashMap<>();
 
     @Override
-    public void onOpen(WebSocket webSocket, Response response) {
-        LOGGER.debug("web socket open");
-    }
+        public void onOpen(WebSocket webSocket, Response response) {
+            LOGGER.debug("web socket open");
+        }
 
-    @Override
-    public void onMessage(WebSocket webSocket, String text) {
-        LOGGER.debug("Got message: {}", text);
-        JsonNode jsonObject = tree(text);
+        @Override
+        public void onMessage(WebSocket webSocket, String text) {
+            LOGGER.debug("Got message: {}", text);
+            JsonNode jsonObject = tree(text);
         LOGGER.debug("Parsed message OK");
 
         String type = jsonObject.get("type").asText();
+
+        if (type.equals("error")) {
+            LOGGER.error("get error from server: {}", text);
+        }
+
         if (!type.equals("message")) {
             LOGGER.debug("Ignoring message type ({})", type);
             return;
@@ -58,7 +63,8 @@ public class KucoinFuturesWebsocketListener extends WebSocketListener {
 
         Optional<String> first = callbackMap.keySet().stream().filter(topic::contains).findFirst();
 
-        KucoinEvent kucoinEvent = (KucoinEvent) deserialize(text, typeReferenceMap.getOrDefault(first.get(), new TypeReference<KucoinEvent>() {}));
+        KucoinEvent kucoinEvent = (KucoinEvent) deserialize(text, typeReferenceMap.getOrDefault(first.get(), new TypeReference<KucoinEvent>() {
+        }));
 
         if (first.isPresent()) {
             callbackMap.get(first.get()).onResponse(kucoinEvent);

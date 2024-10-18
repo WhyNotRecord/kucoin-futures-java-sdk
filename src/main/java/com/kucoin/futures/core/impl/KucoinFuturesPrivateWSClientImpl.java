@@ -91,6 +91,28 @@ public class KucoinFuturesPrivateWSClientImpl extends KucoinFuturesPublicWSClien
     }
 
     @Override
+    public String onMarginModeChange(KucoinFuturesAPICallback<KucoinEvent<MarginModeChangeEvent>> callback) {
+        if (callback != null) {
+            this.getListener().getCallbackMap().put(APIConstants.API_CONTRACT_MARGIN_MODE_PREFIX, callback);
+            this.getListener().getTypeReferenceMap().put(APIConstants.API_CONTRACT_MARGIN_MODE_PREFIX,
+                    new TypeReference<KucoinEvent<MarginModeChangeEvent>>() {});
+        }
+        String topic = APIConstants.API_CONTRACT_MARGIN_MODE_PREFIX;
+        return subscribe(topic, true, true);
+    }
+
+    @Override
+    public String onCrossLeverageChange(KucoinFuturesAPICallback<KucoinEvent<CrossLeverageChangeEvent>> callback) {
+        if (callback != null) {
+            this.getListener().getCallbackMap().put(APIConstants.API_CONTRACT_CROSS_LEVERAGE_PREFIX, callback);
+            this.getListener().getTypeReferenceMap().put(APIConstants.API_CONTRACT_CROSS_LEVERAGE_PREFIX,
+                    new TypeReference<KucoinEvent<CrossLeverageChangeEvent>>() {});
+        }
+        String topic = APIConstants.API_CONTRACT_CROSS_LEVERAGE_PREFIX;
+        return subscribe(topic, true, true);
+    }
+
+    @Override
     public String onOrderChange(KucoinFuturesAPICallback<KucoinEvent<OrderChangeEvent>> callback, String symbol) {
         if (callback != null) {
             this.getListener().getCallbackMap().put(APIConstants.API_SYMBOL_ORDER_CHANGE_TOPIC_PREFIX, callback);

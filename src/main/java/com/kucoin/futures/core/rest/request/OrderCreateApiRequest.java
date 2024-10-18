@@ -125,4 +125,9 @@ public class OrderCreateApiRequest {
      */
     private BigDecimal visibleSize;
 
+    /**
+     * Margin mode: ISOLATED, CROSS, default: ISOLATED
+     */
+    private String marginMode;
+
 }

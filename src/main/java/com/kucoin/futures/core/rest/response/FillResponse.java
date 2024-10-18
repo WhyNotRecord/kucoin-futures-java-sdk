@@ -51,6 +51,8 @@ public class FillResponse {
 
     private Long tradeTime;
 
+    private String marginMode;
+
     public String getSide() {
         return this.side == null ? null : this.side.toLowerCase();
     }

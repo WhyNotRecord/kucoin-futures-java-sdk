@@ -3,6 +3,8 @@
  */
 package com.kucoin.futures.core.rest.interfaces;
 
+import com.kucoin.futures.core.rest.request.ChangeCrossUserLeverageRequest;
+import com.kucoin.futures.core.rest.request.ChangeMarginRequest;
 import com.kucoin.futures.core.rest.request.HistoryPositionsRequest;
 import com.kucoin.futures.core.rest.request.WithdrawMarginRequest;
 import com.kucoin.futures.core.rest.response.*;
@@ -51,6 +53,32 @@ public interface PositionAPI {
      * @throws IOException
      */
     Pagination<HistoryPositionResponse> getHistoryPositions(HistoryPositionsRequest request) throws IOException;
+
+
+    /**
+     * This interface can query the margin mode of the current symbol.
+     * @param symbol symbol
+     * @return
+     * @throws IOException
+     */
+    MarginModeResponse getMarginMode(String symbol) throws IOException;
+
+
+    /**
+     * This interface can modify the margin mode of the current symbol
+     */
+    MarginModeResponse changeMarginMode(ChangeMarginRequest request) throws IOException;
+
+
+    /**
+     * This interface can query the current symbol’s cross-margin leverage multiple
+     */
+    GetCrossUserLeverageResponse getCrossUserLeverage(String symbol) throws IOException;
+
+    /**
+     * This interface can modify the current symbol’s cross-margin leverage multiple
+     */
+    boolean changeCrossUserLeverage(ChangeCrossUserLeverageRequest req) throws IOException;
 
     /**
      * Enable/Disable of Auto-Deposit Margin

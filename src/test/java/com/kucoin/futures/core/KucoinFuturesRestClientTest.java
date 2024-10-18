@@ -131,6 +131,9 @@ public class KucoinFuturesRestClientTest extends BaseTest {
         OrderResponse orderDetail = futuresRestClient.orderAPI().getOrderDetail(order.getOrderId());
         assertThat(orderDetail, notNullValue());
 
+        OrderResponse orderDetail2 = futuresRestClient.orderAPI().getOrderDetailByClientOid(order.getClientOid());
+        assertThat(orderDetail2, notNullValue());
+
         OrderCancelResponse orderCancelResponse = futuresRestClient.orderAPI().cancelOrder(order.getOrderId());
         assertThat(orderCancelResponse.getCancelledOrderIds().size(), is(1));
 
@@ -204,6 +207,24 @@ public class KucoinFuturesRestClientTest extends BaseTest {
 
         Pagination<HistoryPositionResponse> historyPositions = futuresRestClient.positionAPI().getHistoryPositions(HistoryPositionsRequest.builder().symbol("BOMEUSDTM").from(startAt).to(endAt).limit(10).pageId(1).build());
         assertThat(historyPositions, notNullValue());
+
+    }
+
+    @Test
+    public void positionAPI1() throws Exception {
+        MarginModeResponse marginMode = futuresRestClient.positionAPI().getMarginMode(SYMBOL);
+        assertThat(marginMode, notNullValue());
+
+        marginMode = futuresRestClient.positionAPI().changeMarginMode(ChangeMarginRequest.builder().marginMode("CROSS").symbol(SYMBOL).build());
+        assertThat(marginMode, notNullValue());
+
+
+        boolean success = futuresRestClient.positionAPI().changeCrossUserLeverage(ChangeCrossUserLeverageRequest.builder().symbol(SYMBOL).leverage("10").build());
+        assertThat(success, is(true));
+
+        GetCrossUserLeverageResponse response = futuresRestClient.positionAPI().getCrossUserLeverage(SYMBOL);
+        assertThat(response, notNullValue());
+
 
     }
 
@@ -331,6 +352,7 @@ public class KucoinFuturesRestClientTest extends BaseTest {
     private OrderCreateResponse placeCannotDealLimitOrder() throws IOException {
         OrderCreateApiRequest pageRequest = OrderCreateApiRequest.builder()
                 .price(BigDecimal.valueOf(5)).size(BigDecimal.ONE).side("buy").leverage("5")
+                .marginMode("CROSS")
                 .symbol(SYMBOL).type("limit").clientOid(UUID.randomUUID().toString()).build();
         return futuresRestClient.orderAPI().createOrder(pageRequest);
     }

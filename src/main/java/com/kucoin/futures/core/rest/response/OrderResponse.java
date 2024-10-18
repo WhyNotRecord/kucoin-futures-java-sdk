@@ -87,6 +87,11 @@ public class OrderResponse {
 
     private boolean reduceOnly;
 
+    /**
+     * Margin mode: ISOLATED, CROSS
+     */
+    private String marginMode;
+
     public String getStop() {
         return this.stop == null ? null : this.stop.toLowerCase();
     }

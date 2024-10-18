@@ -29,5 +29,6 @@ public class OrderChangeEvent {
     private BigDecimal oldSize;
     private String liquidity;
     private long ts;
+    private String marginMode;
 
 }
