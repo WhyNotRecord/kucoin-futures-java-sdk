@@ -46,7 +46,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <com.squareup.retrofit2.version>2.5.0</com.squareup.retrofit2.version>
+        <com.squareup.retrofit2.version>2.9.0</com.squareup.retrofit2.version>
     </properties>
 
     <dependencies>
@@ -83,16 +83,15 @@
             <version>1.18.20</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
             <version>1.7.25</version>
-        </dependency>
+        </dependency-->
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>1.7.25</version>
-            <scope>test</scope>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.7</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
