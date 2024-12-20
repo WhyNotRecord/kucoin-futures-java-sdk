@@ -45,4 +45,6 @@ public class StopOrderLifecycleEvent {
 
     private Long ts;
 
+    private String marginMode;
+
 }

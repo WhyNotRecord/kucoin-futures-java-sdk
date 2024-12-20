@@ -29,7 +29,7 @@ public class OrderCreateApiRequest {
     private String side;
 
     /**
-     * a valid trading symbol code. e.g. XBTUSDM
+     * a valid trading symbol code. e.g. XBTUSDTM
      */
     private String symbol;
 
@@ -124,5 +124,10 @@ public class OrderCreateApiRequest {
      * [optional] The maximum visible size of an iceberg order
      */
     private BigDecimal visibleSize;
+
+    /**
+     * Margin mode: ISOLATED, CROSS, default: ISOLATED
+     */
+    private String marginMode;
 
 }

@@ -9,6 +9,7 @@ import com.kucoin.futures.core.rest.interfaces.retrofit.OrderAPIRetrofit;
 import com.kucoin.futures.core.rest.request.OrderCreateApiRequest;
 import com.kucoin.futures.core.rest.impl.retrofit.AuthRetrofitAPIImpl;
 import com.kucoin.futures.core.rest.request.DuringPageRequest;
+import com.kucoin.futures.core.rest.request.StOrderCreateRequest;
 import com.kucoin.futures.core.rest.response.*;
 import retrofit2.http.Query;
 
@@ -41,6 +42,11 @@ public class OrderAPIAdapter extends AuthRetrofitAPIImpl<OrderAPIRetrofit> imple
     }
 
     @Override
+    public StOrderCreateResponse createStOrders(StOrderCreateRequest request) throws IOException {
+        return executeSync(getAPIImpl().createStOrders(request));
+    }
+
+    @Override
     public OrderCancelResponse cancelOrder(String orderId) throws IOException {
         return executeSync(getAPIImpl().cancelOrder(orderId));
     }
@@ -66,8 +72,8 @@ public class OrderAPIAdapter extends AuthRetrofitAPIImpl<OrderAPIRetrofit> imple
     }
 
     @Override
-    public OrderResponse getOrderDetailOid(String orderClientOid) throws IOException {
-        return executeSync(getAPIImpl().getOrderOid(orderClientOid));
+    public OrderResponse getOrderDetailByClientOid(String clientOid) throws IOException {
+        return executeSync(getAPIImpl().getOrderByClientOid(clientOid));
     }
 
     @Override

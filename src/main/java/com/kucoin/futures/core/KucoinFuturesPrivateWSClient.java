@@ -54,6 +54,22 @@ public interface KucoinFuturesPrivateWSClient extends KucoinFuturesPublicWSClien
      */
     String onPositionAllChange(KucoinFuturesAPICallback<KucoinEvent<PositionChangeEvent>> callback);
 
+
+    /**
+     * Margin Mode Change Events
+     * @param callback
+     * @return
+     */
+    String onMarginModeChange(KucoinFuturesAPICallback<KucoinEvent<MarginModeChangeEvent>> callback);
+
+
+    /**
+     * Cross Leverage Change Events
+     * @param callback
+     * @return
+     */
+    String onCrossLeverageChange(KucoinFuturesAPICallback<KucoinEvent<CrossLeverageChangeEvent>> callback);
+
     /**
      * You will receive a message when the specified symbol order changes
      *
