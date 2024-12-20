@@ -154,15 +154,7 @@ public interface OrderAPI {
      * @return The requested order.
      */
     OrderResponse getOrderDetailByClientOid(String clientOid) throws IOException;
-
-    /**
-     * Get a single order by client order id (including a stop order).
-     *
-     * @param clientOid
-     * @return The requested order.
-     */
-    OrderResponse getOrderDetailOid(String clientOid) throws IOException;
-
+    
     /**
      * This interface is for the actual fee rate of the trading pair.
      * The fee rate of your sub-account is the same as that of the master account.
